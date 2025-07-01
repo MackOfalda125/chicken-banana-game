@@ -17,10 +17,14 @@ function shuffle(array) {
   return arr;
 }
 
-// Generate a random grid with half chicken, half banana
+// Generate a random grid with half chicken, half banana (equal number)
 function generateRandomGrid() {
-  const half = totalCells / 2;
-  const types = Array(half).fill('chicken').concat(Array(half).fill('banana'));
+  const half = Math.floor(totalCells / 2);
+  let types = Array(half).fill('chicken').concat(Array(half).fill('banana'));
+  // If totalCells is odd, randomly add one more chicken or banana
+  if (types.length < totalCells) {
+    types.push(Math.random() < 0.5 ? 'chicken' : 'banana');
+  }
   const shuffled = shuffle(types);
   return shuffled.map(type => ({ type, revealed: false }));
 }
