@@ -36,3 +36,55 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.grid {
+  margin: 0 auto;
+  margin-top: 24px;
+}
+
+.square {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  font-size: 18px;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.square img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.square button {
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.2s;
+}
+
+.square button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.square span {
+  font-size: 10px;
+  color: #888;
+  margin-top: 2px;
+}
