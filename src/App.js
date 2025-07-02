@@ -33,9 +33,10 @@ function App() {
   const [cells, setCells] = useState(generateRandomGrid());
   const [winner, setWinner] = useState(null);
   const [revealedCount, setRevealedCount] = useState(0);
+  const [userChoice, setUserChoice] = useState(null); // 'chicken' or 'banana'
 
   const handleCellClick = (index) => {
-    if (cells[index].revealed || winner) return;
+    if (cells[index].revealed || winner || !userChoice) return;
 
     const newCells = [...cells];
     newCells[index].revealed = true;
@@ -44,17 +45,59 @@ function App() {
     const newRevealedCount = revealedCount + 1;
     setRevealedCount(newRevealedCount);
 
+    // If user clicks on the opposite type, they lose
+    if (cells[index].type !== userChoice) {
+      setWinner('You lost!');
+      return;
+    }
+
     // Optional: declare winner when all are revealed
     if (newRevealedCount === totalCells) {
       setWinner('All revealed!');
     }
   };
 
+  const handleChoice = (choice) => {
+    setUserChoice(choice);
+    setWinner(null);
+    setCells(generateRandomGrid());
+    setRevealedCount(0);
+  };
+
   return (
     <div className="container">
       <h1>Chicken Banana Game!</h1>
+      <div style={{ marginBottom: 16 }}>
+        <button
+          onClick={() => handleChoice('chicken')}
+          style={{
+            background: userChoice === 'chicken' ? '#ffe599' : '#fff',
+            marginRight: 8,
+            padding: '8px 16px',
+            border: '1px solid #ccc',
+            cursor: 'pointer',
+          }}
+        >
+          🐔 Chicken
+        </button>
+        <button
+          onClick={() => handleChoice('banana')}
+          style={{
+            background: userChoice === 'banana' ? '#ffe599' : '#fff',
+            padding: '8px 16px',
+            border: '1px solid #ccc',
+            cursor: 'pointer',
+          }}
+        >
+          🍌 Banana
+        </button>
+      </div>
       <h2>
-        {winner ? winner : null}
+        {!userChoice
+          ? 'Choose your character!'
+          : winner
+          ? winner
+          : `You are: ${userChoice.charAt(0).toUpperCase() + userChoice.slice(1)}`}
       </h2>
       <div
         className="grid"
@@ -81,7 +124,7 @@ function App() {
               userSelect: 'none',
               position: 'relative',
               overflow: 'hidden',
-              cursor: cell.revealed || winner ? 'default' : 'pointer',
+              cursor: cell.revealed || winner || !userChoice ? 'default' : 'pointer',
               opacity: 1,
             }}
             onClick={() => handleCellClick(index)}
@@ -97,6 +140,18 @@ function App() {
             )}
           </div>
         ))}
+      </div>
+      {/* Restart Button */}
+      <div style={{ marginTop: 32 }}>
+        <button
+          onClick={() => {
+            setCells(generateRandomGrid());
+            setWinner(null);
+            setRevealedCount(0);
+          }}
+        >
+          Restart
+        </button>
       </div>
     </div>
   );
