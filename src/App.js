@@ -67,27 +67,16 @@ function App() {
   return (
     <div className="container">
       <h1>Chicken Banana Game!</h1>
-      <div style={{ marginBottom: 16 }}>
+      <div className="character-select">
         <button
+          className={`character-btn${userChoice === 'chicken' ? ' selected' : ''}`}
           onClick={() => handleChoice('chicken')}
-          style={{
-            background: userChoice === 'chicken' ? '#ffe599' : '#fff',
-            marginRight: 8,
-            padding: '8px 16px',
-            border: '1px solid #ccc',
-            cursor: 'pointer',
-          }}
         >
           🐔 Chicken
         </button>
         <button
+          className={`character-btn${userChoice === 'banana' ? ' selected' : ''}`}
           onClick={() => handleChoice('banana')}
-          style={{
-            background: userChoice === 'banana' ? '#ffe599' : '#fff',
-            padding: '8px 16px',
-            border: '1px solid #ccc',
-            cursor: 'pointer',
-          }}
         >
           🍌 Banana
         </button>
@@ -99,41 +88,17 @@ function App() {
           ? winner
           : `You are: ${userChoice.charAt(0).toUpperCase() + userChoice.slice(1)}`}
       </h2>
-      <div
-        className="grid"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: `repeat(${gridSize}, 60px)`,
-          gap: '8px',
-          justifyContent: 'center',
-        }}
-      >
+      <div className="grid">
         {cells.map((cell, index) => (
           <div
             key={index}
-            className="square"
-            style={{
-              width: 60,
-              height: 60,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: '#f0f0f0',
-              border: '1px solid #ccc',
-              fontSize: 18,
-              userSelect: 'none',
-              position: 'relative',
-              overflow: 'hidden',
-              cursor: cell.revealed || winner || !userChoice ? 'default' : 'pointer',
-              opacity: 1,
-            }}
+            className={`square${cell.revealed ? ' revealed' : ''}${cell.revealed && cell.type ? ` ${cell.type}` : ''}${cell.revealed || winner || !userChoice ? ' inactive' : ''}`}
             onClick={() => handleCellClick(index)}
           >
             {cell.revealed ? (
               <img
                 src={cell.type === 'chicken' ? CHICKEN_IMG : BANANA_IMG}
                 alt={cell.type}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             ) : (
               <span>{index + 1}</span>
@@ -142,8 +107,9 @@ function App() {
         ))}
       </div>
       {/* Restart Button */}
-      <div style={{ marginTop: 32 }}>
+      <div className="restart-container">
         <button
+          className="restart-btn"
           onClick={() => {
             setCells(generateRandomGrid());
             setWinner(null);
