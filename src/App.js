@@ -48,6 +48,11 @@ function App() {
     // If user clicks on the opposite type, they lose
     if (cells[index].type !== userChoice) {
       setWinner('You lost!');
+  
+      // Reveal all cells
+      const updatedCells = newCells.map(cell => ({ ...cell, revealed: true }));
+      setCells(updatedCells)
+
       return;
     }
 
